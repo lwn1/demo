@@ -284,7 +284,7 @@
           </div>
         </QuestionModuleItem>
         <QuestionModuleItem title="与确切或疑似病例密切接触史">
-          <div class="addTrip" @click="addTrip">
+          <div class="addTrip" @click="addContactRecord">
             <van-icon name="plus" class="icon" />添加接触记录
           </div>
         </QuestionModuleItem>
@@ -350,6 +350,9 @@ export default {
     },
     addTrip(){
       this.$router.push('/addtrip')
+    },
+    addContactRecord(){
+      this.$router.push('/contactrecord')
     }
   },
   created() {

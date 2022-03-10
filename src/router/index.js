@@ -22,6 +22,10 @@ const routes = [
   {
     path:"/addtrip",
     component:()=>import("../views/AddTrip/AddTrip.vue")
+  },
+  {
+    path:'/contactrecord',
+    component:()=>import("../views/ContactRecord/ContactRecord.vue")
   }
 ];
 
