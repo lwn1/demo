@@ -1,6 +1,6 @@
 <template>
   <div class="HomeView">
-    <van-form @submit="onSubmit">
+    <van-form @submit="onSubmit" scroll-to-error>
       <QuestionModule title="行程信息">
         <QuestionModuleItem title="姓名" required>
           <van-field
@@ -172,7 +172,16 @@
           </template>
         </van-field>
       </QuestionModule>
-      <QuestionModule title="是否居家隔离"> phone </QuestionModule>
+      <QuestionModule title="是否居家隔离">
+        <QuestionModuleItem title="相关部门已经确定需居家隔离观察人员，且在观察期内">
+          <van-field 
+            name='quarantine'
+            v-model="quarantine"
+            placeholder="如是，请输入隔离地址，否则输入否">
+
+          </van-field>
+        </QuestionModuleItem>
+      </QuestionModule>
       <QuestionModule title="居住属性">
         <van-field
           name="liveType"
@@ -279,11 +288,17 @@
         <QuestionModuleItem
           title="2022年3月1日起本市以外行程"
         >
+        <p v-for="(item,index) in tripList" :key="index">
+          {{item.departPlace}}
+        </p>
           <div class="addTrip" @click="addTrip">
             <van-icon name="plus" class="icon" />添加行程
           </div>
         </QuestionModuleItem>
         <QuestionModuleItem title="与确切或疑似病例密切接触史">
+          <p v-for="(item,index) in contactRecordList" :key="index">
+            {{item.name}}
+          </p>
           <div class="addTrip" @click="addContactRecord">
             <van-icon name="plus" class="icon" />添加接触记录
           </div>
@@ -335,7 +350,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["userId"]),
+    ...mapState(["userId","tripList","contactRecordList"]),
   },
   methods: {
     ...mapMutations({

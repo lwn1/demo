@@ -139,7 +139,6 @@
             name='remainDays'
             v-model="remainDays"
             :rules='[{required: true}]'
-            @click="stayTime=true"
             >
           </van-field>
         </QuestionModuleItem>
@@ -190,9 +189,9 @@ export default {
   },
   methods: {
     onSubmit(values) {
-      console.log(values);
-      const params = {...values}
-      console.log(params)
+      // console.log(values)
+      this.$store.dispatch('getTripList',values)
+      this.$router.go(-1)
     },
     editPopup() {
       this.show = true;

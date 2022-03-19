@@ -22,7 +22,8 @@ export default {
             // 症状
             symptom: undefined,
             detailSymptom: undefined,
-            over37: false
+            over37: false,
+            quarantine:undefined
         }
     },
     methods: {

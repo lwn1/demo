@@ -12,24 +12,28 @@
       <QuestionModule>
         <QuestionModuleItem title="确诊或疑似病例名字">
           <van-field
+            name='name'
+            v-model="name"
             placeholder="请输入确诊或疑似病例姓名"
-            :rules='[{required: true}]'
           >
           </van-field>
         </QuestionModuleItem>
 
         <QuestionModuleItem title="确诊或疑似病例身份证号">
           <van-field
+            maxLength="30"
+            name='certificatesNumber'
+            v-model="certificatesNumber"
             placeholder="请输入确诊或疑似病例身份证号"
-            :rules='[{required: true}]'
           >
           </van-field>
         </QuestionModuleItem>
 
         <QuestionModuleItem title="确诊或疑似病例关系">
           <van-field
+            name='relation'
+            v-model="relation"
             placeholder="请输入确诊或疑似病例关系"
-            :rules='[{required: true}]'
           >
           </van-field>
         </QuestionModuleItem>
@@ -38,9 +42,10 @@
           <van-field
             readonly
             clickable
+            name='contactTimes'
+            v-model="contactTimes"
             @click="contactTime=true"
             placeholder="请输入接触时间"
-            :rules='[{required: true}]'
           >
           </van-field>
           <van-popup v-model="contactTime" position="bottom">
@@ -48,6 +53,8 @@
              title="请选择"
              :max-date='maxDate'
              v-model="maxDate"
+             @confirm='contactTimeVal'
+             @cancel='contactTime=false'
              type='date'>
 
             </van-datetime-picker>
@@ -56,12 +63,12 @@
 
         <QuestionModuleItem title="情况描述">
           <van-field
+            name='conditionDescribe'
+            v-model="conditionDescribe"
             placeholder="请输入情况描述"
-            :rules='[{required: true}]'
           >
           </van-field>
         </QuestionModuleItem>
-
       </QuestionModule>
       <div>
         <van-button block type='info'>提交</van-button>
@@ -73,12 +80,15 @@
 <script>
 import QuestionModule from "@/components/QuestionModule";
 import QuestionModuleItem from "@/components/QuestionModuleItem";
+import formMixin from './mixins/formMixin'
+import { parseTime } from '@/utils/dateFormat'
 export default {
   name: "ContactRecord",
   components: {
     QuestionModule,
     QuestionModuleItem,
   },
+  mixins:[formMixin],
   data() {
     return {
       contactTime:false,
@@ -87,8 +97,23 @@ export default {
   },
   methods: {
     onSubmit(values) {
-      console.log(values);
+      // console.log(values);
+      if(!values.name){
+        this.$toast.fail('请输入确诊或疑似病例名字')
+        return
+      }
+      this.$store.dispatch('getContactRecord',values)
+      this.$router.go(-1)
     },
+    contactTimeVal(value){
+      // console.log(value)
+      if(value){
+        this.contactTimes = parseTime(value,'{y}-{m}-{d}')
+      }else{
+        this.contactTimes = undefined
+      }
+      this.contactTime = false
+    }
   },
 };
 </script>
